@@ -1,0 +1,353 @@
+
+<h2 class="sr-only">EOM Open Order invoicing dashboard through June 30 2026: 136 orders, $738K pipeline, delay reasons, product type, order status ERP bar chart, on-hold, and pending breakdown</h2>
+
+<style>
+  .dash { padding: 1rem 0; font-family: var(--font-sans); }
+  .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .metric { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem 1.1rem; }
+  .metric-label { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 5px; }
+  .metric-value { font-size: 26px; font-weight: 500; color: var(--color-text-primary); margin: 0; }
+  .metric-sub { font-size: 12px; color: var(--color-text-tertiary); margin: 5px 0 0; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
+  .card-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 1.1rem; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.25rem; }
+  .two-col .card { margin-bottom: 0; }
+
+  .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+  .bar-label { width: 160px; flex-shrink: 0; color: var(--color-text-secondary); font-size: 13px; text-align: right; }
+  .bar-track { flex: 1; background: var(--color-background-tertiary); border-radius: 3px; height: 22px; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-fill-inner { height: 100%; border-radius: 3px; display: flex; align-items: center; padding-right: 8px; justify-content: flex-end; }
+  .bar-val { font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .bar-aside { font-size: 12px; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
+
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: var(--border-radius-md); white-space: nowrap; flex-shrink: 0; }
+  .badge-danger { background: #FCEBEB; color: #A32D2D; }
+  .badge-warn   { background: #FAEEDA; color: #854F0B; }
+  .badge-info   { background: #E6F1FB; color: #185FA5; }
+  .badge-ok     { background: #EAF3DE; color: #3B6D11; }
+  .badge-hold   { background: #EEEDFE; color: #3C3489; font-size: 12px; padding: 3px 9px; border-radius: var(--border-radius-md); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 13px; color: var(--color-text-secondary); }
+  .legend-dot { width: 11px; height: 11px; border-radius: 2px; flex-shrink: 0; }
+
+  .sub-note { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 5px; padding-top: 12px; border-top: 0.5px solid var(--color-border-tertiary); margin-top: 14px; }
+  .sub-row { display: flex; gap: 10px; font-size: 12px; margin-bottom: 4px; }
+  .sub-key { color: var(--color-text-tertiary); flex-shrink: 0; width: 76px; }
+
+  .hold-note { font-size: 12px; color: var(--color-text-secondary); margin: 10px 0 0; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); text-align: left; padding: 0 8px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  td { padding: 7px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); vertical-align: middle; font-size: 12px; }
+  tr:last-child td { border-bottom: none; }
+
+  .pending-note { font-size: 12px; color: var(--color-text-secondary); margin: 10px 0 0; padding-top: 10px; border-top: 0.5px solid var(--color-border-tertiary); }
+
+  .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .insight-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.55; }
+  .insight-icon { flex-shrink: 0; font-size: 17px; margin-top: 1px; }
+</style>
+
+<div class="dash">
+
+  <div class="metric-row">
+    <div class="metric">
+      <p class="metric-label"><i class="ti ti-file-invoice" aria-hidden="true"></i> Total orders (≤ Jun 30)</p>
+      <p class="metric-value">136</p>
+      <p class="metric-sub">75 completed · 61 pending · 1 on hold</p>
+    </div>
+    <div class="metric">
+      <p class="metric-label"><i class="ti ti-clock" aria-hidden="true"></i> Avg days to ship</p>
+      <p class="metric-value">8.2</p>
+      <p class="metric-sub">Median 6 days · Max 65 days</p>
+    </div>
+    <div class="metric">
+      <p class="metric-label"><i class="ti ti-currency-dollar" aria-hidden="true"></i> Total pipeline</p>
+      <p class="metric-value">$738K</p>
+      <p class="metric-sub">$200K completed · $538K pending</p>
+    </div>
+    <div class="metric">
+      <p class="metric-label"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Orders with delay</p>
+      <p class="metric-value">33%</p>
+      <p class="metric-sub">45 of 136 · $233K flagged</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <p class="card-title">Delay reasons — count & value at risk</p>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#9FE1CB"></span>Supply/vendor</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#378ADD"></span>Documentation</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#D85A30"></span>Labor/ops</span>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <span class="bar-label">Need supplier invoice</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:100%;background:#9FE1CB">
+              <span class="bar-val" style="color:#085041">19 orders · $108K · 11.7d</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Need freight invoice</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:53%;background:#378ADD">
+              <span class="bar-val" style="color:#fff">10 · $13.6K · 2.6d</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Need lot numbers</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:37%;background:#378ADD">
+              <span class="bar-val" style="color:#fff">7 · $0 · 0.4d</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Need labor hours</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:26%;background:#D85A30">
+              <span class="bar-val" style="color:#fff">5 · $10.3K · 11.8d</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Need BOL/PT</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:11%;background:#378ADD"></div>
+          </div>
+          <span class="bar-aside" style="color:#185FA5">2 · $78.4K · 8.5d</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">No response rep</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:5%;background:#D85A30"></div>
+          </div>
+          <span class="bar-aside" style="color:#A32D2D">1 · $21.9K · 65d</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Backordered</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:5%;background:#BA7517"></div>
+          </div>
+          <span class="bar-aside" style="color:#854F0B">1 · $301 · 42d</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">Avg days to ship by product type</p>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <span class="bar-label">Equipment</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:100%;background:#D85A30">
+              <span class="bar-val" style="color:#fff">23.4 days · 14 orders</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Lab</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:38%;background:#BA7517">
+              <span class="bar-val" style="color:#fff">9.0 days · 3 orders</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Legionella</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:22%;background:#3B6D11">
+              <span class="bar-val" style="color:#fff">5.1 days · 17 orders</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Chemical</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:18%;background:#3B6D11"></div>
+          </div>
+          <span class="bar-aside" style="color:#3B6D11">4.3 days · 38 orders</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Service</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:14%;background:#3B6D11"></div>
+          </div>
+          <span class="bar-aside" style="color:#3B6D11">3.3 days · 3 orders</span>
+        </div>
+      </div>
+      <p class="sub-note">Primary delay driver by product</p>
+      <div class="sub-row"><span class="sub-key">Chemical</span><span>Freight invoice (10), lot numbers (7), supplier inv (2), BOL/PT (2)</span></div>
+      <div class="sub-row"><span class="sub-key">Equipment</span><span>Supplier inv (5), labor hours (3), no rep response (1), backordered (1)</span></div>
+      <div class="sub-row"><span class="sub-key">Legionella</span><span>100% need supplier invoice (12 of 19 orders)</span></div>
+      <div class="sub-row"><span class="sub-key">Service</span><span>Labor hours (2) · BL 163528 open 643 days</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Order status ERP — avg days to ship</p>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <span class="bar-label">Order issue – customer</span>
+        <div class="bar-track">
+          <div class="bar-fill-inner" style="width:100%;background:#D85A30">
+            <span class="bar-val" style="color:#fff">643 days · 1 order · August Winter &amp; Sons</span>
+          </div>
+        </div>
+        <span class="badge badge-danger">Critical</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Need labor hours</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:10%;background:#D85A30"></div>
+        </div>
+        <span class="bar-aside" style="color:#A32D2D">65 days · 1 order</span>
+        <span class="badge badge-danger">Critical</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Order issue – supplier</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:3.7%;background:#BA7517"></div>
+        </div>
+        <span class="bar-aside" style="color:#854F0B">23.7 days avg · 3 orders</span>
+        <span class="badge badge-warn">Slow</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Service not complete</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:2.5%;background:#BA7517"></div>
+        </div>
+        <span class="bar-aside" style="color:#854F0B">16 days · 1 order</span>
+        <span class="badge badge-warn">Watch</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Processed</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:2%;background:#378ADD"></div>
+        </div>
+        <span class="bar-aside" style="color:#185FA5">13.0 days avg · 113 orders</span>
+        <span class="badge badge-info">Main volume</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Order issue – rep</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:0.9%;background:#3B6D11"></div>
+        </div>
+        <span class="bar-aside" style="color:var(--color-text-secondary)">6 days avg · 2 orders</span>
+        <span class="badge badge-ok">On track</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Shipped – district whse</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:0.2%;background:#3B6D11"></div>
+        </div>
+        <span class="bar-aside" style="color:var(--color-text-secondary)">1.4 days avg · 5 orders</span>
+        <span class="badge badge-ok">Best</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card" style="border-left:3px solid #534AB7;border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+      <p class="card-title"><i class="ti ti-lock" aria-hidden="true"></i> On hold — 1 order</p>
+      <table>
+        <thead>
+          <tr>
+            <th>BL#</th>
+            <th>Customer</th>
+            <th>BL date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>172223</td>
+            <td>Reno Redevelopment Agency</td>
+            <td>Jun 30, 2026</td>
+            <td><span class="badge-hold">On hold</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="hold-note">No ship date, product type, or ERP status assigned. Products: Iwaki &amp; Walchem chemical feed pumps. Classify and assign an owner today.</p>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><i class="ti ti-hourglass" aria-hidden="true"></i> Pending pipeline — 61 orders · $538K</p>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <span class="bar-label">Chemical</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:100%;background:#378ADD">
+              <span class="bar-val" style="color:#fff">38 orders · $262K</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Equipment</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:97%;background:#D85A30">
+              <span class="bar-val" style="color:#fff">18 orders · $260K</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Service</span>
+          <div class="bar-track">
+            <div class="bar-fill-inner" style="width:6%;background:#BA7517">
+              <span class="bar-val" style="color:#fff">2 · $15.5K</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Legionella</span>
+          <div class="bar-track"><div class="bar-fill" style="width:1%;background:#3B6D11"></div></div>
+          <span class="bar-aside" style="color:var(--color-text-secondary)">2 · $550</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Lab</span>
+          <div class="bar-track"><div class="bar-fill" style="width:1%;background:#888780"></div></div>
+          <span class="bar-aside" style="color:var(--color-text-secondary)">1 · $0</span>
+        </div>
+      </div>
+      <p class="pending-note">Top by value: Tesla Megafactory $80.4K (Aug 13) · Granite $65.7K (Aug 31) · Boland $62.5K (Jul 7) · Granite $56.2K (Jul 2) · US Engineering $35.1K (Aug 5)</p>
+    </div>
+  </div>
+
+  <div class="card" style="background:var(--color-background-secondary);border:none;">
+    <p class="card-title"><i class="ti ti-bulb" aria-hidden="true"></i> Top improvement actions</p>
+    <div class="insight-grid">
+      <div class="insight-item">
+        <i class="ti ti-receipt insight-icon" style="color:#0F6E56" aria-hidden="true"></i>
+        <span><strong>Fix supplier invoice process.</strong> 19 orders / $108K blocked, led by 12 Legionella orders. Set a 48-hr vendor invoice SLA post-shipment.</span>
+      </div>
+      <div class="insight-item">
+        <i class="ti ti-user-exclamation insight-icon" style="color:#A32D2D" aria-hidden="true"></i>
+        <span><strong>Escalate August Winter immediately.</strong> BL 163528 open 643 days, $15.3K. Aug 31 placeholder is not a plan — needs executive action now.</span>
+      </div>
+      <div class="insight-item">
+        <i class="ti ti-truck insight-icon" style="color:#185FA5" aria-hidden="true"></i>
+        <span><strong>Automate freight invoice collection.</strong> 10 Chemical orders waiting. Trigger carrier requests at delivery confirmation to cut the 2.6-day lag.</span>
+      </div>
+      <div class="insight-item">
+        <i class="ti ti-file-description insight-icon" style="color:#185FA5" aria-hidden="true"></i>
+        <span><strong>Resolve BOL/PT on 2 high-value orders.</strong> Tesla Cortex 2.0 ($73K, BL 172095) and Tesla Stamping South ($5.4K, BL 172092) both pending BOL/PT.</span>
+      </div>
+      <div class="insight-item">
+        <i class="ti ti-clock-edit insight-icon" style="color:#993C1D" aria-hidden="true"></i>
+        <span><strong>Enforce same-day labor hour entry.</strong> 5 orders avg 11.8-day delay. Pueblo Mechanical (65 days, $21.9K) still open — add a 3-day rep escalation rule.</span>
+      </div>
+      <div class="insight-item">
+        <i class="ti ti-lock-open insight-icon" style="color:#534AB7" aria-hidden="true"></i>
+        <span><strong>Triage on-hold order today.</strong> BL 172223 (Reno Redevelopment, Jun 30) has no product type, status, or ship date. Assign owner before it ages further.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
